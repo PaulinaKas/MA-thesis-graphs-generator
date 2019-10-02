@@ -17,7 +17,8 @@ class CombinedData():
     def combine(self):
         combined_df = pd.DataFrame(self.tbsp['Date'].append(self.rates['Date']))
         combined_df.drop_duplicates(inplace=True)
-        combined_df.reset_index(inplace = True, drop = True) # created 'new' dataframe with dates available for both csv files
+        # created 'new' dataframe with dates available for both csv files
+        combined_df.reset_index(inplace = True, drop = True)
         combined_df['TBSP Index'] = np.nan
         combined_df['Interest rate'] = np.nan
         return combined_df
