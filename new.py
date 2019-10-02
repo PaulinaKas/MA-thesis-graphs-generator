@@ -6,13 +6,21 @@ import scipy
 plt.style.use('bmh')
 _FIG_SIZE = (16*0.6,12*0.6)
 
-tbsp = pd.read_csv('tbsp.csv')
-rates = pd.read_csv('rates.csv')
+#'2018-12-19'
 
-appended_pd = pd.DataFrame(tbsp['Date'].append(rates['Date']))
-appended_pd.drop_duplicates(inplace=True)
-appended_pd.reset_index(inplace = True, drop = True) # created 'new' dataframe with dates available for both csv files
-appended_pd['TBSP Index'] = np.nan
-appended_pd['Interest rate'] = np.nan
+class CombinedData():
 
-print(appended_pd)
+    def __init__(self, tbsp, rates):
+        self.tbsp = pd.read_csv(tbsp)
+        self.rates = pd.read_csv(rates)
+
+    def combine(self):
+        combined_df = pd.DataFrame(self.tbsp['Date'].append(self.rates['Date']))
+        combined_df.drop_duplicates(inplace=True)
+        combined_df.reset_index(inplace = True, drop = True) # created 'new' dataframe with dates available for both csv files
+        combined_df['TBSP Index'] = np.nan
+        combined_df['Interest rate'] = np.nan
+        return combined_df
+
+data = CombinedData('tbsp.csv', 'rates.csv')
+print(data.combine())
