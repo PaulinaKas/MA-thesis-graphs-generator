@@ -23,7 +23,7 @@ class CombinedData():
 
 class Graphs(CombinedData):
 
-    def first_line_on_the_chart(self):
+    def prepare_lines_for_chart(self):
         final_df = super().remove_useless_columns()
         x_ticks_labels = list(final_df.iloc[:,0])[::80] # displays every eighty date
         x = np.arange(len(final_df.iloc[:,0]))
@@ -38,32 +38,24 @@ class Graphs(CombinedData):
         ax1.set_xticks(x[::80]) # should be the same as frequency for x_ticks_labels
         ax1.set_xticklabels(x_ticks_labels, rotation='vertical')
 
-        return [l1, ax1, final_df, x, fig]
-
-    def second_line_on_the_chart(self):
-        # defines needed values which have been returned from first_line_on_the_chart()
-        ax1 = self.first_line_on_the_chart()[1]
-        final_df = self.first_line_on_the_chart()[2]
-        x = self.first_line_on_the_chart()[3]
-        fig = self.first_line_on_the_chart()[4]
 
         ax2 = ax1.twinx()
         s2 = final_df.iloc[:,2] # 2 means 3rd column (1st column was with dates)
         l2, = ax2.plot(x, s2, 'g-')
         ax2.set_ylabel("Y2 label", color = 'g')
 
-        return [l2, fig]
-
+        return [l1, l2, fig]
 
     def save_chart(self):
-        # defines needed values which have been returned from second_line_on_the_chart()
-        l1 = self.first_line_on_the_chart()[0]
-        l2 = self.second_line_on_the_chart()[0]
-        fig = self.second_line_on_the_chart()[1]
+        # defines needed values which have been returned in prepare_lines_for_chart()
+        l1 = self.prepare_lines_for_chart()[0]
+        l2 = self.prepare_lines_for_chart()[1]
+        fig = self.prepare_lines_for_chart()[2]
 
         plt.legend([l1, l2], ['Y1', 'Y2'])
         fig.tight_layout()
         plt.savefig("graph.png",bbox_inches='tight',dpi=300)
+
 
 
 data = CombinedData('tbsp.csv', 'rates.csv')
@@ -71,6 +63,5 @@ data.combine()
 data.remove_useless_columns()
 
 graph = Graphs('tbsp.csv', 'rates.csv')
-graph.first_line_on_the_chart()
-graph.second_line_on_the_chart()
+graph.prepare_lines_for_chart()
 graph.save_chart()
