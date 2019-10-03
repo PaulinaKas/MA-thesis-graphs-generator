@@ -37,7 +37,8 @@ After cloning the repo:
 2. Open ```new.py``` script.
 3. In ```main()``` function change names for file1.csv and file2.csv to be names of your .csv files.
 4. In class ```CombinedData()``` in function ```remove_useless_columns()``` change columns to be removed, it means replace the ```[3,4,5,6]``` with ```[your columns to drop]```.
-<img src="readme_images/image2_for_github.png" width="200">
+<img src="readme_images/image2_for_github.png" width="700"> 
+_As you can see on above left image, I have much more columns than I need to display on chart. This is why I can drop them_.
 5. In class ```Graphs(CombinedData)``` in function ```prepare_lines_for_chart()``` change frequency for ```x_ticks_labels```. If you have a wide range of dates _(I have more than 10 years)_ it would be better to use ```80``` or ```100```. Test some cases and choose the best one.
 6. In the same function please change names for title, labels and axes.
 7. That's all. The graph will be generated and saved in the folder in which the script ```new.py``` is located.
