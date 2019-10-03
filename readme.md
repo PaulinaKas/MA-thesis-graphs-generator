@@ -1,4 +1,4 @@
-# Charts generator 
+# Charts generator  
 #### App generating multilines charts based on various CSV files downloaded from popular stock websites.
 
 
