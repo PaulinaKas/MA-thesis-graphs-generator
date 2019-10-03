@@ -26,12 +26,11 @@ class Graphs(CombinedData):
     def first_line_on_the_chart(self):
         final_df = super().remove_useless_columns()
         x_ticks_labels = list(final_df.iloc[:,0])[::80] # displays every eighty date
-
-        fig, ax1 = plt.subplots(figsize=_FIG_SIZE)
-        s1 = final_df.iloc[:,1] # 1 means 2nd column
+        x = np.arange(len(final_df.iloc[:,0]))
 
         #s1 = savgol_filter(df_final['Stopa'], 25, 1)
-        x = np.arange(len(final_df.iloc[:,0]))
+        fig, ax1 = plt.subplots(figsize=_FIG_SIZE)
+        s1 = final_df.iloc[:,1] # 1 means 2nd column (1st column was with dates)
         l1, = ax1.plot(x, s1, 'b-')
         ax1.title.set_text('Chart\'s title')
         ax1.set_xlabel('X label')
@@ -39,29 +38,33 @@ class Graphs(CombinedData):
         ax1.set_xticks(x[::80]) # should be the same as frequency for x_ticks_labels
         ax1.set_xticklabels(x_ticks_labels, rotation='vertical')
 
+        return [l1, ax1, final_df, x, fig]
+
+    def second_line_on_the_chart(self):
+        # defines needed values which have been returned from first_line_on_the_chart()
+        ax1 = self.first_line_on_the_chart()[1]
+        final_df = self.first_line_on_the_chart()[2]
+        x = self.first_line_on_the_chart()[3]
+        fig = self.first_line_on_the_chart()[4]
+
         ax2 = ax1.twinx()
-        s2 = final_df.iloc[:,2] # 2 means 3rd column
+        s2 = final_df.iloc[:,2] # 2 means 3rd column (1st column was with dates)
         l2, = ax2.plot(x, s2, 'g-')
         ax2.set_ylabel("Y2 label", color = 'g')
 
-        plt.legend([l1, l2], ['Y1', 'Y'])
-        fig.tight_layout()
-        plt.savefig("graph.png",bbox_inches='tight',dpi=300)
-        plt.show()
+        return [l2, fig]
 
-        return l1, l2
-
-
-
-'''
     def show_and_save(self):
-        l1 = self.first_line_on_the_chart()
-        l2 = self.l2()
-        plt.legend([l1, l2], ['Interest rate', 'TBSP'])
+        # defines needed values which have been returned from second_line_on_the_chart()
+        l1 = self.first_line_on_the_chart()[0]
+        l2 = self.second_line_on_the_chart()[0]
+        fig = self.second_line_on_the_chart()[1]
+
+        plt.legend([l1, l2], ['Y1', 'Y2'])
         fig.tight_layout()
         plt.savefig("graph.png",bbox_inches='tight',dpi=300)
         plt.show()
-'''
+
 
 
 data = CombinedData('tbsp.csv', 'rates.csv')
@@ -70,4 +73,5 @@ data.remove_useless_columns()
 
 graph = Graphs('tbsp.csv', 'rates.csv')
 graph.first_line_on_the_chart()
-#graph.show_and_save()
+graph.second_line_on_the_chart()
+graph.show_and_save()
