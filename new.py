@@ -17,14 +17,15 @@ class CombinedData():
         return combined_df
 
     def remove_useless_columns(self):
-        thin_combined_df = self.combine()
-        thin_combined_df.drop(thin_combined_df.columns[[2,3,4,5]],axis=1,inplace=True) # [2,3,4,5] are columns which should be removed
-        return thin_combined_df
+        thin_df = self.combine()
+        thin_df.drop(thin_df.columns[[2,3,4,5]],axis=1,inplace=True) # [2,3,4,5] are columns which should be removed
+        return thin_df
 
 class Graphs(CombinedData):
 
     final_df = self.thin_combined_df()
     x_ticks_labels = list(final_df['Date'])[::80] # displays every eighty date
+
 
 
 data = CombinedData('tbsp.csv', 'rates.csv')
