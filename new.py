@@ -28,7 +28,6 @@ class Graphs(CombinedData):
         x_ticks_labels = list(final_df.iloc[:,0])[::80] # displays every eighty date
         x = np.arange(len(final_df.iloc[:,0]))
 
-        #s1 = savgol_filter(df_final['Stopa'], 25, 1)
         fig, ax1 = plt.subplots(figsize=_FIG_SIZE)
         s1 = final_df.iloc[:,1] # 1 means 2nd column (1st column was with dates)
         l1, = ax1.plot(x, s1, 'b-')
@@ -37,7 +36,6 @@ class Graphs(CombinedData):
         ax1.set_ylabel("Y1 label", color = 'b')
         ax1.set_xticks(x[::80]) # should be the same as frequency for x_ticks_labels
         ax1.set_xticklabels(x_ticks_labels, rotation='vertical')
-
 
         ax2 = ax1.twinx()
         s2 = final_df.iloc[:,2] # 2 means 3rd column (1st column was with dates)
@@ -57,11 +55,10 @@ class Graphs(CombinedData):
         plt.savefig("graph.png",bbox_inches='tight',dpi=300)
 
 
-
-data = CombinedData('tbsp.csv', 'rates.csv')
+data = CombinedData('tbsp.csv', 'rates.csv') # here are csv files which script is wotking on
 data.combine()
 data.remove_useless_columns()
 
-graph = Graphs('tbsp.csv', 'rates.csv')
+graph = Graphs('tbsp.csv', 'rates.csv') # here are csv files which script is wotking on
 graph.prepare_lines_for_chart()
 graph.save_chart()
