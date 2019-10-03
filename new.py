@@ -54,7 +54,8 @@ class Graphs(CombinedData):
 
         return [l2, fig]
 
-    def show_and_save(self):
+
+    def save_chart(self):
         # defines needed values which have been returned from second_line_on_the_chart()
         l1 = self.first_line_on_the_chart()[0]
         l2 = self.second_line_on_the_chart()[0]
@@ -63,8 +64,6 @@ class Graphs(CombinedData):
         plt.legend([l1, l2], ['Y1', 'Y2'])
         fig.tight_layout()
         plt.savefig("graph.png",bbox_inches='tight',dpi=300)
-        plt.show()
-
 
 
 data = CombinedData('tbsp.csv', 'rates.csv')
@@ -74,4 +73,4 @@ data.remove_useless_columns()
 graph = Graphs('tbsp.csv', 'rates.csv')
 graph.first_line_on_the_chart()
 graph.second_line_on_the_chart()
-graph.show_and_save()
+graph.save_chart()
