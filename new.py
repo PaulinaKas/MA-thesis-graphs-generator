@@ -19,6 +19,7 @@ class CombinedData():
     def remove_useless_columns(self):
         thin_df = self.combine()
         thin_df.drop(thin_df.columns[[3,4,5,6]],axis=1,inplace=True) # [3,4,5,6] are columns which should be removed
+        thin_df.iloc[:,1] = thin_df.iloc[:,1].interpolate(method='akima') # interpolation lets curve to be smooth, usuful for data like monthly inflation
         return thin_df
 
 class Graphs(CombinedData):
