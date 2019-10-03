@@ -55,11 +55,11 @@ class Graphs(CombinedData):
         plt.savefig("graph.png",bbox_inches='tight',dpi=300)
 
 def main():
-    data = CombinedData('tbsp.csv', 'rates.csv') # here are csv files which script is wotking on
+    data = CombinedData('file1.csv', 'file2.csv') # here are csv files which script is wotking on
     data.combine()
     data.remove_useless_columns()
 
-    graph = Graphs('tbsp.csv', 'rates.csv') # here are csv files which script is wotking on
+    graph = Graphs('file1.csv', 'file2.csv') # here are csv files which script is wotking on
     graph.prepare_lines_for_chart()
     graph.save_chart()
 
