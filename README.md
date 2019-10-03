@@ -33,11 +33,11 @@ Python 3.7.4
 macOS 10.14.6
  
 After cloning the repo:
-1. Paste do main directory .csv files which contains data like: stock prices, index points, bonds interest rates and so on.
+1. Paste do main directory .csv files which contains data like: stock prices, index points, bonds interest rates and so on. _The websites I used were: investing.com and stooq.pl_.
 2. Open ```new.py``` script.
 3. In ```main()``` function change names for file1.csv and file2.csv to be names of your .csv files.
 4. In class ```CombinedData()``` in function ```remove_useless_columns()``` change columns to be removed, it means replace the ```[3,4,5,6]``` with ```[your columns to drop]```.
-5. In class ```Graphs(CombinedData)``` in function ```prepare_lines_for_chart()``` change frequency for ```x_ticks_labels```. If you have a wide range of dates it would be better to use ```80``` or ```100```. Test some cases and choose the best one.
+5. In class ```Graphs(CombinedData)``` in function ```prepare_lines_for_chart()``` change frequency for ```x_ticks_labels```. If you have a wide range of dates _(I have more than 10 years)_ it would be better to use ```80``` or ```100```. Test some cases and choose the best one.
 6. In the same function please change names for title, labels and axes.
 7. That's all. The graph will be generated and saved in the folder in which the script ```new.py``` is located.
 
