@@ -1,7 +1,7 @@
 # Charts generator 
 #### App generating multilines charts based on various CSV files downloaded from popular stock websites.
 
-<img src="readme_images/image1_for_github.png" width="500">
+<img src="readme_images/image1_for_github.png" width="700">
 
 ## Table of contents:
 #### * General info
