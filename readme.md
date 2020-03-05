@@ -50,6 +50,5 @@ _As you can see on above left image, I have much more columns than I need to dis
 
 ## **Status**:
 
-The next steps will be:
-* preparing script to be able work on .csv files with different date formats
+Master's Thesis defended. Project is finished.
 
