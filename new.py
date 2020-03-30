@@ -28,15 +28,15 @@ class UselessColumnsRemover():
 
 class ChartGenerator():
 
-    def __init__(self, df_to_prepare):
-        self.df_to_prepare = df_to_prepare
+    def __init__(self, df_for_chart):
+        self.df_for_chart = df_for_chart
 
     def generate_chart(self):
-        x_ticks_labels = list(self.df_to_prepare.iloc[:,0])[::80] # displays every eighty date
-        x = np.arange(len(self.df_to_prepare.iloc[:,0]))
+        x_ticks_labels = list(self.df_for_chart.iloc[:,0])[::80] # displays every eighty date
+        x = np.arange(len(self.df_for_chart.iloc[:,0]))
 
         fig, ax1 = plt.subplots(figsize=_FIG_SIZE)
-        s1 = self.df_to_prepare.iloc[:,1] # 1 means 2nd column (1st column was with dates)
+        s1 = self.df_for_chart.iloc[:,1] # 1 means 2nd column (1st column was with dates)
         l1, = ax1.plot(x, s1, 'b-')
         ax1.title.set_text('Chart\'s title')
         ax1.set_xlabel('X label')
@@ -45,7 +45,7 @@ class ChartGenerator():
         ax1.set_xticklabels(x_ticks_labels, rotation='vertical')
 
         ax2 = ax1.twinx()
-        s2 = self.df_to_prepare.iloc[:,2] # 2 means 3rd column (1st column was with dates)
+        s2 = self.df_for_chart.iloc[:,2] # 2 means 3rd column (1st column was with dates)
         l2, = ax2.plot(x, s2, 'g-')
         ax2.set_ylabel("Y2 label", color = 'g')
 
