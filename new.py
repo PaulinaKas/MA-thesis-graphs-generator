@@ -6,19 +6,19 @@ import scipy
 plt.style.use('bmh')
 _FIG_SIZE = (16*0.6,12*0.6)
 
-class CombinedData():
+class DataMerger():
 
     def __init__(self, tbsp, rates):
         self.tbsp = pd.read_csv(tbsp)
         self.rates = pd.read_csv(rates)
 
-    def combine(self):
-        combined_df = pd.DataFrame(self.tbsp.append(self.rates)).groupby('Date', as_index=False).first()
-        return combined_df
+    def merge(self):
+        merged_df = pd.DataFrame(self.tbsp.append(self.rates)).groupby('Date', as_index=False).first()
+        return merged_df
 
 class UselessColumnsRemover():
 
-    def __init__(df_to_modify):
+    def __init__(self, df_to_modify):
         self.df_to_modify = df_to_modify
 
     def remove_useless_columns(self):
@@ -26,15 +26,17 @@ class UselessColumnsRemover():
         # df_to_modify.iloc[:,1] = df_to_modify.iloc[:,1].interpolate(method='akima') # interpolation lets curve to be smooth, usuful for data like monthly inflation
         return self.df_to_modify
 
-class Graphs(CombinedData):
+class Chart():
+
+    def __init__(self, df_to_prepare):
+        self.df_to_prepare = df_to_prepare
 
     def prepare_lines_for_chart(self):
-        final_df = super().remove_useless_columns()
-        x_ticks_labels = list(final_df.iloc[:,0])[::80] # displays every eighty date
-        x = np.arange(len(final_df.iloc[:,0]))
+        x_ticks_labels = list(self.df_to_prepare.iloc[:,0])[::80] # displays every eighty date
+        x = np.arange(len(self.df_to_prepare.iloc[:,0]))
 
         fig, ax1 = plt.subplots(figsize=_FIG_SIZE)
-        s1 = final_df.iloc[:,1] # 1 means 2nd column (1st column was with dates)
+        s1 = self.df_to_prepare.iloc[:,1] # 1 means 2nd column (1st column was with dates)
         l1, = ax1.plot(x, s1, 'b-')
         ax1.title.set_text('Chart\'s title')
         ax1.set_xlabel('X label')
@@ -43,7 +45,7 @@ class Graphs(CombinedData):
         ax1.set_xticklabels(x_ticks_labels, rotation='vertical')
 
         ax2 = ax1.twinx()
-        s2 = final_df.iloc[:,2] # 2 means 3rd column (1st column was with dates)
+        s2 = self.df_to_prepare.iloc[:,2] # 2 means 3rd column (1st column was with dates)
         l2, = ax2.plot(x, s2, 'g-')
         ax2.set_ylabel("Y2 label", color = 'g')
 
@@ -57,17 +59,18 @@ class Graphs(CombinedData):
 
         plt.legend([l1, l2], ['Y1', 'Y2'])
         fig.tight_layout()
-        plt.savefig("graph.png",bbox_inches='tight',dpi=300)
+        plt.savefig("chart.png",bbox_inches='tight',dpi=300)
 
 def main():
-    data = CombinedData('file1.csv', 'file2.csv') # here are csv files which script is wotking on
-    joined_data = data.combine()
-    columns_remover = UselessColumnsRemover(joined_data)
-    columns_remover.remove_useless_columns()
+    data = DataMerger('file1.csv', 'file2.csv') # here are csv files which script is wotking on
+    joined_data = data.merge()
 
-    graph = Graphs('file1.csv', 'file2.csv') # here are csv files which script is wotking on
-    graph.prepare_lines_for_chart()
-    graph.save_chart()
+    columns_remover = UselessColumnsRemover(joined_data)
+    final_df = columns_remover.remove_useless_columns()
+
+    chart = Chart(final_df)
+    chart.prepare_lines_for_chart()
+    chart.save_chart()
 
 if __name__ == "__main__":
     main()
