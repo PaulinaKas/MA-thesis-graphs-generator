@@ -17,6 +17,12 @@ class Merger(ABC):
     def merge(self):
         pass
 
+class Generator(ABC):
+
+    @abstractmethod
+    def generate_chart(self):
+        pass
+
 class FilesMerger(Merger):
 
     def __init__(self, *args):
@@ -35,12 +41,6 @@ class UselessColumnsRemover():
         self.df_to_modify.drop(self.df_to_modify.columns[[3,4,5,6]],axis=1,inplace=True) # [3,4,5,6] are columns which should be removed
         # df_to_modify.iloc[:,1] = df_to_modify.iloc[:,1].interpolate(method='akima') # interpolation lets curve to be smooth, usuful for data like monthly inflation
         return self.df_to_modify
-
-class Generator(ABC):
-
-    @abstractmethod
-    def generate_chart(self):
-        pass
 
 class ChartGenerator(Generator):
 
