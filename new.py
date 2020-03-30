@@ -54,8 +54,8 @@ class ChartGenerator():
         plt.savefig("chart.png",bbox_inches='tight',dpi=300)
 
 def main():
-    data = DataMerger('file1.csv', 'file2.csv')
-    joined_data = data.merge()
+    data_merger = DataMerger('file1.csv', 'file2.csv')
+    joined_data = data_merger.merge()
 
     columns_remover = UselessColumnsRemover(joined_data)
     final_df = columns_remover.remove_useless_columns()
