@@ -16,11 +16,15 @@ class CombinedData():
         combined_df = pd.DataFrame(self.tbsp.append(self.rates)).groupby('Date', as_index=False).first()
         return combined_df
 
+class UselessColumnsRemover():
+
+    def __init__(df_to_modify):
+        self.df_to_modify = df_to_modify
+
     def remove_useless_columns(self):
-        thin_df = self.combine()
-        thin_df.drop(thin_df.columns[[3,4,5,6]],axis=1,inplace=True) # [3,4,5,6] are columns which should be removed
-        #thin_df.iloc[:,1] = thin_df.iloc[:,1].interpolate(method='akima') # interpolation lets curve to be smooth, usuful for data like monthly inflation
-        return thin_df
+        self.df_to_modify.drop(self.df_to_modify.columns[[3,4,5,6]],axis=1,inplace=True) # [3,4,5,6] are columns which should be removed
+        # df_to_modify.iloc[:,1] = df_to_modify.iloc[:,1].interpolate(method='akima') # interpolation lets curve to be smooth, usuful for data like monthly inflation
+        return self.df_to_modify
 
 class Graphs(CombinedData):
 
@@ -57,8 +61,9 @@ class Graphs(CombinedData):
 
 def main():
     data = CombinedData('file1.csv', 'file2.csv') # here are csv files which script is wotking on
-    data.combine()
-    data.remove_useless_columns()
+    joined_data = data.combine()
+    columns_remover = UselessColumnsRemover(joined_data)
+    columns_remover.remove_useless_columns()
 
     graph = Graphs('file1.csv', 'file2.csv') # here are csv files which script is wotking on
     graph.prepare_lines_for_chart()
