@@ -31,7 +31,7 @@ class Chart():
     def __init__(self, df_to_prepare):
         self.df_to_prepare = df_to_prepare
 
-    def prepare_lines_for_chart(self):
+    def generate_chart(self):
         x_ticks_labels = list(self.df_to_prepare.iloc[:,0])[::80] # displays every eighty date
         x = np.arange(len(self.df_to_prepare.iloc[:,0]))
 
@@ -49,28 +49,19 @@ class Chart():
         l2, = ax2.plot(x, s2, 'g-')
         ax2.set_ylabel("Y2 label", color = 'g')
 
-        return [l1, l2, fig]
-
-    def save_chart(self):
-        # defines needed values which have been returned in prepare_lines_for_chart()
-        l1 = self.prepare_lines_for_chart()[0]
-        l2 = self.prepare_lines_for_chart()[1]
-        fig = self.prepare_lines_for_chart()[2]
-
         plt.legend([l1, l2], ['Y1', 'Y2'])
         fig.tight_layout()
         plt.savefig("chart.png",bbox_inches='tight',dpi=300)
 
 def main():
-    data = DataMerger('file1.csv', 'file2.csv') 
+    data = DataMerger('file1.csv', 'file2.csv')
     joined_data = data.merge()
 
     columns_remover = UselessColumnsRemover(joined_data)
     final_df = columns_remover.remove_useless_columns()
 
     chart = Chart(final_df)
-    chart.prepare_lines_for_chart()
-    chart.save_chart()
+    chart.generate_chart()
 
 if __name__ == "__main__":
     main()
