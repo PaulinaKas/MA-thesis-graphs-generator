@@ -2,18 +2,28 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import scipy
+from abc import ABC, abstractmethod
 
 plt.style.use('bmh')
 _FIG_SIZE = (16*0.6,12*0.6)
 
-class DataMerger():
+class Merger(ABC):
 
-    def __init__(self, tbsp, rates):
-        self.tbsp = pd.read_csv(tbsp)
-        self.rates = pd.read_csv(rates)
+    def __init__(self, file1, file2, *args):
+        self.file1 = pd.read_csv(file1)
+        self.file2 = pd.read_csv(file2)
+
+    @abstractmethod
+    def merge(self):
+        pass
+
+class FilesMerger(Merger):
+
+    def __init__(self, *args):
+        super().__init__(*args)
 
     def merge(self):
-        merged_df = pd.DataFrame(self.tbsp.append(self.rates)).groupby('Date', as_index=False).first()
+        merged_df = pd.DataFrame(self.file1.append(self.file2)).groupby('Date', as_index=False).first()
         return merged_df
 
 class UselessColumnsRemover():
@@ -26,7 +36,13 @@ class UselessColumnsRemover():
         # df_to_modify.iloc[:,1] = df_to_modify.iloc[:,1].interpolate(method='akima') # interpolation lets curve to be smooth, usuful for data like monthly inflation
         return self.df_to_modify
 
-class ChartGenerator():
+class Generator(ABC):
+
+    @abstractmethod
+    def generate_chart(self):
+        pass
+
+class ChartGenerator(Generator):
 
     def __init__(self, df_for_chart):
         self.df_for_chart = df_for_chart
@@ -54,7 +70,7 @@ class ChartGenerator():
         plt.savefig("chart.png",bbox_inches='tight',dpi=300)
 
 def main():
-    data_merger = DataMerger('file1.csv', 'file2.csv')
+    data_merger = FilesMerger('file1.csv', 'file2.csv')
     joined_data = data_merger.merge()
 
     columns_remover = UselessColumnsRemover(joined_data)
