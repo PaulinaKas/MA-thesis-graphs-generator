@@ -62,7 +62,7 @@ class Chart():
         plt.savefig("chart.png",bbox_inches='tight',dpi=300)
 
 def main():
-    data = DataMerger('file1.csv', 'file2.csv') # here are csv files which script is wotking on
+    data = DataMerger('file1.csv', 'file2.csv') 
     joined_data = data.merge()
 
     columns_remover = UselessColumnsRemover(joined_data)
