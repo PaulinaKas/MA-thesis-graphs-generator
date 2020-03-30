@@ -26,7 +26,7 @@ class UselessColumnsRemover():
         # df_to_modify.iloc[:,1] = df_to_modify.iloc[:,1].interpolate(method='akima') # interpolation lets curve to be smooth, usuful for data like monthly inflation
         return self.df_to_modify
 
-class Chart():
+class ChartGenerator():
 
     def __init__(self, df_to_prepare):
         self.df_to_prepare = df_to_prepare
@@ -60,8 +60,8 @@ def main():
     columns_remover = UselessColumnsRemover(joined_data)
     final_df = columns_remover.remove_useless_columns()
 
-    chart = Chart(final_df)
-    chart.generate_chart()
+    chart_generator = ChartGenerator(final_df)
+    chart_generator.generate_chart()
 
 if __name__ == "__main__":
     main()
